@@ -1,1 +1,6 @@
+#this fil use for github ignore
+
+
 node_modules/
+#env file
+.env/
