@@ -3,7 +3,6 @@ const router = express.Router();
 
 //person added
 const Person = require('./../models/Person');
-const { route } = require('./menuRoutes');
 
 //get method to get data
 router.get('/', async(req, res) => {

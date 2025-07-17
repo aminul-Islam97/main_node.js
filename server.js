@@ -1,31 +1,45 @@
 const express = require('express');
 const app = express();
-const db = require('./db');
-
 require('dotenv').config();
-
-//bodyparser its a middleware
+const db = require('./db');
+const passport = require('./auth');
 const bodyParser = require('body-parser');
+
+// Initialize Passport
+app.use(passport.initialize());
+
+// Body Parser Middleware
 app.use(bodyParser.json());
 
+// Logger Middleware
+const logRequest = (req, res, next) => {
+  console.log(`[${new Date().toLocaleString()}] Request to: ${req.originalUrl}`);
+  next();
+};
+app.use(logRequest);
 
-
+// Home Route
 app.get('/', (req, res) => {
-  res.send(' i am not okay brother')
-})
+  res.send('I am not okay brother');
+});
 
-
-//import router file
+// Import Routes
 const personRoutes = require('./routes/personRoutes');
 const menuRoutes = require('./routes/menuRoutes');
 
-//use the routers
-app.use('/person',personRoutes);
-app.use('/menu',menuRoutes);
+// Auth Route 
+app.use('/person', passport.authenticate('local', { session: false }), (req, res) => {
+  // you can optionally return a token here or user info
+  res.json({ message: 'Login successful', user: req.user });
+});
 
 
-const PORT =process.env.PORT || 3000
+// Use Routers
+app.use('/person', personRoutes); // Public or protect using your own middleware
+app.use('/menu', menuRoutes);     // Public or protect
 
+// Start Server
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Example app listening on port 3000`)
-})
+  console.log(`Server is running on port ${PORT}`);
+});
