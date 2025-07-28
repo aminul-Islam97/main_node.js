@@ -4,6 +4,19 @@ const router = express.Router();
 const Menu = require('./../models/Menu')
 
 //for menu
+
+router.get('/', async(req, res) => {
+  try{
+    const data =await Menu.find();
+    console.log('data fatched');
+    res.status(200).json(data);
+  }
+  catch(err){
+    console.log(err);
+    res.status(500).json({error: 'Internal Server Error'})
+  }
+})
+
 router.post('/', async(req, res) => {
   try{
     //assuming the request body contains the person data
@@ -23,17 +36,6 @@ router.post('/', async(req, res) => {
   }
 })
 
-router.get('/', async(req, res) => {
-  try{
-    const data =await Menu.find();
-    console.log('data fatched');
-    res.status(200).json(data);
-  }
-  catch(err){
-    console.log(err);
-    res.status(500).json({error: 'Internal Server Error'})
-  }
-})
 
 //put method to update data
 router.put('/:id', async(req, res) => {

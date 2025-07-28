@@ -28,10 +28,11 @@ const personRoutes = require('./routes/personRoutes');
 const menuRoutes = require('./routes/menuRoutes');
 
 // Auth Route 
-app.use('/person', passport.authenticate('local', { session: false }), (req, res) => {
+/*app.use('/person', passport.authenticate('local', { session: false }), (req, res) => {
   // you can optionally return a token here or user info
   res.json({ message: 'Login successful', user: req.user });
-});
+});*/
+const localAuthMiddleware = passport.authenticate('local',{session:false});
 
 
 // Use Routers

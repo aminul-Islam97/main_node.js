@@ -5,7 +5,6 @@ const bcrypt = require("bcrypt");
 const personSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
   },
   age: {
     type: Number,
@@ -25,7 +24,7 @@ const personSchema = new mongoose.Schema({
 personSchema.pre("save", async function (next) {
   const person = this;
 
-  if (!person.isModified('password')) return next(); // ✅ FIXED TYPO
+  if (!person.isModified('password')) return next(); 
 
   try {
     const salt = await bcrypt.genSalt(10);
